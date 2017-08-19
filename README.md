@@ -82,8 +82,8 @@ requirements are currently too restrictive to be used as part of this project.
 
 ## Known issues
 
-This is still a work in progress. Many things still do not work as expected,
-including:
+This is still a buggy work-in-progress. Many things still do not work as
+expected, including:
 
  * Splitting/joining paragraphs is not right yet.
  * Autocomplete sometimes suggests phrases with incomplete word fragments.
