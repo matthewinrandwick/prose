@@ -2,7 +2,7 @@
 
 Prose is a console-based autopredicting text editor.
 
-Author: Matthew Herrmann, 2017
+> Author: Matthew Herrmann, 2017
 
 You might want to use it to write stories, articles or long work documents. It
 uses ngrams to complete likely phrases, similar to how autocomplete on phones
@@ -24,10 +24,12 @@ Makefile manages this automatically.
 
 On Ubuntu/Debian:
 
+```
    sudo apt install golang-go
    git clone https://github.com/matthewinrandwick/prose.git
    cd prose/src/mherr/prose
    make
+```
 
 The make process also downloads some files from remote sources
 which are not included as part of the source code. (I hope to
@@ -38,8 +40,10 @@ at some point.)
 
 Start prose with an (existing) filename to edit:
 
+```
    touch file.txt
    bin/prose file.txt
+```
 
 The prose console window will be shown. By default, the editor
 is in autocomplete mode, where it will attempt to autocomplete words using
