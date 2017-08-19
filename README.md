@@ -10,6 +10,8 @@ works. Since latency is of the utmost importance to make autocomplete
 comfortable and useful, I decided to write an editor from scratch rather than
 trying to integrate into an existing editor such as vim or emacs.
 
+![example use](demo.gif)
+
 ## Dependencies
 
 Prose requires a recent version of Go to compile. It runs on
