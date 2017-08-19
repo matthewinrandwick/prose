@@ -10,6 +10,8 @@ works. Since latency is of the utmost importance to make autocomplete
 comfortable and useful, I decided to write an editor from scratch rather than
 trying to integrate into an existing editor such as vim or emacs.
 
+## Demo
+
 ![example use](demo.gif)
 
 ## Dependencies
@@ -74,7 +76,7 @@ for contemporary American english, but it is very limited compared to the
 comes from out-of-date travel guides, which gives some amusing ngram
 suggestions at times.
 
-The best source I've found to date are the
+The database which is the closest to my needs is the
 [COCA ngrams database](http://www.ngrams.info/), however, its usage
 requirements are currently too restrictive to be used as part of this project.
 
