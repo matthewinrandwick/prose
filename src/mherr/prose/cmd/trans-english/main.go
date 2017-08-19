@@ -10,6 +10,25 @@ import (
 	"arbovm/levenshtein"
 )
 
+var punct = map[byte]bool{
+	'\\': true,
+	'`':  true,
+	'"':  true,
+	'\n': true,
+	' ':  true,
+	'\r': true,
+	',':  true,
+	'.':  true,
+	'!':  true,
+	'[':  true,
+	']':  true,
+	'^':  true,
+	'(':  true,
+	')':  true,
+	'?':  true,
+	'_':  true,
+}
+
 var (
 	from = flag.String("from", "", "The dictionary file that is the source dialect.")
 	to   = flag.String("to", "", "The dictionary file for the target dialect.")
@@ -88,6 +107,87 @@ func main() {
 
 	srcDst := makeLookup(src, dst)
 	_ = srcDst
+
+	for _, f := range filenames {
+		if err := process(f, srcDst); err != nil {
+			fail(err)
+		}
+	}
+}
+
+func process(filename string, m map[string]string) error {
+	f, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	out := bufio.NewWriter(os.Stdout)
+	defer out.Flush()
+
+	s := bufio.NewScanner(f)
+	for s.Scan() {
+		l := s.Text() + "\n"
+		st := 0
+	line:
+		for i := range l {
+			c := l[i]
+			switch {
+			case i == len(l)-1:
+				fallthrough
+			case punct[c]:
+			default:
+				continue line
+			}
+
+			w := l[st:i]
+
+			flush := func() {
+				out.WriteString(w)
+				out.WriteByte(c)
+				st = i + 1
+			}
+
+			if len(w) == 0 {
+				flush()
+				continue
+			}
+
+			// First look up the word in the dictionary, as-is.
+			nw, ok := m[w]
+			if ok {
+				w = nw
+				flush()
+				continue
+			}
+
+			// Convert upper-case words.
+			if w == strings.ToUpper(w) {
+				w2 := strings.ToLower(w)
+				nw, ok := m[w2]
+				if ok {
+					w = strings.ToUpper(nw)
+					flush()
+					continue
+				}
+			}
+
+			// Convert title-case words.
+			if w == strings.Title(w) {
+				w2 := strings.ToLower(w)
+				nw, ok := m[w2]
+				if ok {
+					w = strings.Title(nw)
+					flush()
+					continue
+				}
+			}
+
+			flush()
+		}
+	}
+
+	return nil
 }
 
 func makeLookup(src, dst *lang) map[string]string {
