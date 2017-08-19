@@ -14,13 +14,12 @@ trying to integrate into an existing editor such as vim or emacs.
 
 ## Dependencies
 
-Prose requires a recent version of Go to compile. It runs on
-Linux.
+Prose requires a recent version of Go to compile. It runs on Linux.
 
 ## Compiling
 
-There is no need to place the code under your $GOPATH, the
-Makefile manages this automatically.
+There is no need to place the code under your $GOPATH, the Makefile manages
+this automatically.
 
 On Ubuntu/Debian:
 
@@ -31,12 +30,11 @@ On Ubuntu/Debian:
    make
 ```
 
-The make process also downloads some files from remote sources
-which are not included as part of the source code. (I hope to
-get permission from those sources to include the files directly
-at some point.)
+The make process also downloads some files from remote sources which are not
+included as part of the source code. (I hope to get permission from those
+sources to include the files directly at some point.)
 
-## Use
+## Using the editor
 
 Start prose with an (existing) filename to edit:
 
@@ -56,9 +54,34 @@ The following commands are supported:
  * Control-A - Enables autocomplete.
  * Control-O - Disables autocomplete.
 
+## How does it work?
+
+After every keystroke, the editor performs a binary search over all ngrams
+files in parallel. This is done by reading the files in blocks as-needed rather
+than loading them into memory, which keeps the memory use of the editor quite
+modest despite using databases of inputs ~500MB large. The interesting code
+handling that is in bsearch.go.
+
+The console handling is done directly via ANSI escape sequences since they're
+not that hard and it's useful to have control over redraws for performance.
+
+One of the most challenging aspects of the project is getting good, small
+sources of ngrams. The Google ngram corpus is excellent but much too large to
+download and process on my laptop into something usable by a text editor. The
+[OANC](http://www.anc.org/data/oanc/) is the next-best freely available source
+for contemporary American english, but it is very limited compared to the
+[British National Corpus](http://www.natcorp.ox.ac.uk/). A lot of its text
+comes from out-of-date travel guides, which gives some amusing ngram
+suggestions at times.
+
+The best source I've found to date are the
+[COCA ngrams database](http://www.ngrams.info/), however, its usage
+requirements are currently too restrictive to be used as part of this project.
+
 ## Known issues
 
-This is still a work in progress. Many things still do not work as expected, including:
+This is still a work in progress. Many things still do not work as expected,
+including:
 
  * Splitting/joining paragraphs is not right yet.
  * Autocomplete sometimes suggests phrases with incomplete word fragments.
