@@ -2,7 +2,7 @@
 
 root = $(shell readlink -f ../../..)
 
-all: bin/ngrams.1.all.txt bin/ngrams.1.txt bin/prose bin/ngrams.2.txt bin/bnc-to-text
+all: bin/ngrams.1.all.txt bin/ngrams.1.txt bin/prose bin/ngrams.2.txt bin/bnc-to-text bin/ngrams-from-text
 
 bin/bad.txt:
 	mkdir -p bin && scripts/bad-words.sh > bin/bad.txt
@@ -27,6 +27,11 @@ bin/bnc-to-text: $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go)
 	export GOPATH="$(root)" && \
 		mkdir -p bin && \
 		go build -o bin/bnc-to-text cmd/bnc-to-text/bnc-to-text.go
+
+bin/ngrams-from-text: $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go)
+	export GOPATH="$(root)" && \
+		mkdir -p bin && \
+		go build -o bin/ngrams-from-text cmd/ngrams-from-text/main.go
 
 bin/ngrams.2.txt:
 	cp -f db-oanc/ngrams.*.txt.gz bin/ && gunzip bin/*.gz
