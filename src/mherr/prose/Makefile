@@ -21,7 +21,7 @@ bin/prose: $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go) bin/ngrams.1
 	export GOPATH="$(root)" && go test ./... && mkdir -p bin && go build -o bin/prose cmd/prose/main.go
 
 bin/ngrams.2.txt:
-	cp -f db-oanc/ngrams.*.txt bin/
+	cp -f db-oanc/ngrams.*.txt.gz bin/ && gunzip bin/*.gz
 
 .PHONY: clean
 
