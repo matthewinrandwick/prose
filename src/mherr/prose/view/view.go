@@ -30,8 +30,9 @@ type Doc struct {
 
 // New creates a new document from the given file.
 func New(filename string) (*Doc, error) {
+
 	data, err := ioutil.ReadFile(filename)
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return nil, err
 	}
 

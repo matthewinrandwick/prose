@@ -38,10 +38,9 @@ sources to include the files directly at some point.)
 
 ## Using the editor
 
-Start prose with an (existing) filename to edit:
+Start prose with an filename to edit:
 
 ```
-   touch file.txt
    bin/prose file.txt
 ```
 
